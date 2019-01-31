@@ -6,7 +6,6 @@ import com.warm.share.model.dto.LoginDto;
 import com.warm.share.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @Value("${jdbc.password}")
-    String password;
+
 
     @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public BaseModel register(@Validated LoginDto loginDto) {
-        System.out.println(password);
         User user = new User();
         user.setPhone(loginDto.getPhone());
         user.setName(loginDto.getPhone());

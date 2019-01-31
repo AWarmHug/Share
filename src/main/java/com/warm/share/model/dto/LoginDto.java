@@ -21,10 +21,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginDto {
-    @NotBlank(message = "${phone.notnull}")
-    @Length(min = 11, max = 11, message = "${phone.notnull}")
+
+    @NotBlank(message = "{phone.notnull}")
+    @Length(min = 11, max = 11, message = "{phone.notnull}")
     private String phone;
-    @NotBlank(message = "${password.notnull}")
+    @NotBlank(message = "{password.notnull}")
     private String password;
 
 }

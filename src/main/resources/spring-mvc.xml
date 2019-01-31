@@ -9,7 +9,25 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
     <context:component-scan base-package="com.warm.share" />
 
-    <context:property-placeholder location="classpath:validated.properties" />
+
+    <!-- 如果使用了注释后必须配置设置 -->
+    <mvc:annotation-driven validator="validator"/>
+
+    <!-- 校验器 -->
+    <bean id="validator"
+        class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <!--指定校验器-->
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+        <!--引入校验器校验的数据源，注意ref和value的区别，前者引入一个object，后者引入string-->
+        <property name="validationMessageSource" ref="messageSource"/>
+    </bean>
+
+    <bean id="messageSource"
+        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames" value="validated" />
+    </bean>
+
+
 
 
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
