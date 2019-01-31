@@ -10,23 +10,25 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
     <context:component-scan base-package="com.warm.share" />
 
 
-    <!-- 如果使用了注释后必须配置设置 -->
-    <mvc:annotation-driven validator="validator"/>
-
-    <!-- 校验器 -->
-    <bean id="validator"
-        class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-        <!--指定校验器-->
+    <!-- 以下 validator  ConversionService 在使用 mvc:annotation-driven 会 自动注册-->
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
-        <!--引入校验器校验的数据源，注意ref和value的区别，前者引入一个object，后者引入string-->
+        <!-- 如果不加默认到 使用classpath下的 ValidationMessages.properties -->
         <property name="validationMessageSource" ref="messageSource"/>
     </bean>
 
-    <bean id="messageSource"
-        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basenames" value="validated" />
+    <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->
+                <value>classpath:validated</value>
+            </list>
+        </property>
+        <property name="useCodeAsDefaultMessage" value="false"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="cacheSeconds" value="60"/>
     </bean>
-
 
 
 
@@ -34,7 +36,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
         <property name="serializationInclusion" value="NON_NULL" />
     </bean>
 
-    <mvc:annotation-driven>
+    <mvc:annotation-driven validator="validator">
         <mvc:message-converters>
             <bean
                 class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">

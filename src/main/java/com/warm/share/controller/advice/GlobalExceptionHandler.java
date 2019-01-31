@@ -26,19 +26,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public BaseModel handelM(MethodArgumentNotValidException e){
+    public BaseModel handelM(MethodArgumentNotValidException e) {
 
         return BaseModel.fail(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
 
     @ExceptionHandler(BindException.class)
     @ResponseBody
-    public BaseModel handelBindException(BindException e){
+    public BaseModel handelBindException(BindException e) {
+        System.out.println(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         return BaseModel.fail(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
     }
-
-
-
 
 
 }
